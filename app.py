@@ -8,7 +8,7 @@ CORS(app)
 @app.route("/api/server")
 def hello_world():
 
-    client = MongoClient('mongodb+srv://whaam:B-oop123@project2022.yskak.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+    client = MongoClient('INSERT LINK HERE')
     db = client.get_database("configuration")
     collection = db.get_collection("setup")
 
