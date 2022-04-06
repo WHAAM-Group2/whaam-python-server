@@ -5,10 +5,12 @@ from pymongo import MongoClient
 app = Flask(__name__)
 CORS(app)
 
+client = MongoClient(
+    'mongodb+srv://whaam:B-oop123@project2022.yskak.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+
 @app.route("/api/server")
 def hello_world():
 
-    client = MongoClient('mongodb+srv://whaam:B-oop123@project2022.yskak.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
     db = client.get_database("configuration")
     collection = db.get_collection("setup")
 
@@ -16,6 +18,7 @@ def hello_world():
     print(doc)
 
     return {"status": doc["status"]}
+
 
 # Run the app
 if __name__ == "__main__":
