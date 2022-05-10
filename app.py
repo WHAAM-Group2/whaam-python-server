@@ -1,3 +1,4 @@
+from http import client
 from flask import Flask, request
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -5,8 +6,12 @@ from pymongo import MongoClient
 app = Flask(__name__)
 CORS(app)
 
+# client = MongoClient(
+#     'mongodb+srv://whaam:B-oop123@project2022.yskak.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true')
+
 client = MongoClient(
-    'mongodb+srv://whaam:B-oop123@project2022.yskak.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true')
+    'mongodb://localhost:27017'
+)
 
 # Registers a new user
 
@@ -41,6 +46,16 @@ def get_game_status():
     doc = collection.find_one({"username": request.json["username"]})
 
     return {"status": doc["status"]}
+
+@app.route("/api/get_game_ready_status")
+def get_game_ready_status():
+    db = client.get_database("configuration")
+    collection = db.get_collection("setup")
+
+    doc = collection.find_one({"name": "setup"}, {"_id": 0})
+
+    return {"status": doc}
+
 
 # Showing the game scoreboard
 
