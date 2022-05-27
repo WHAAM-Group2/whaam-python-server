@@ -8,6 +8,9 @@ from pymongo import MongoClient
     connected web applications. The API will collect information from the databae 
     and return it to the web application. Alternatively, the API can be used to
     update the database configuration document with new information of a new player. 
+
+    @Author: Wael Mahrous
+
 """
 
 app = Flask(__name__)
