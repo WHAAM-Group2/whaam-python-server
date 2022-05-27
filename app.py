@@ -3,21 +3,26 @@ from flask import Flask, request
 from flask_cors import CORS
 from pymongo import MongoClient
 
+"""
+    A script that connects to a MongoDB instance and acts as an API for the
+    connected web applications. The API will collect information from the databae 
+    and return it to the web application. Alternatively, the API can be used to
+    update the database configuration document with new information of a new player. 
+"""
+
 app = Flask(__name__)
 CORS(app)
 
-# client = MongoClient(
-#     'mongodb+srv://whaam:B-oop123@project2022.yskak.mongodb.net/myFirstDatabase?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true')
 
 client = MongoClient(
     'mongodb://localhost:27017'
 )
 
-# Registers a new user
-
-
 @app.route("/api/start_game", methods=["POST"])
 def start_game():
+
+    # Attempts to start a game by editing the configuration document in the database
+    # with the username of the player who started the game.
 
     db = client.get_database("configuration")
     collection = db.get_collection("setup")
@@ -28,11 +33,12 @@ def start_game():
 
     return {"status": True}
 
-# Shows player status
-
-
 @app.route("/api/get_game_status", methods=["POST"])
 def get_game_status():
+
+    # Attempts to get the player status by reading the configuration 
+    # document of that specific player. Will also return the latest 
+    # game status of the player.
 
     db = client.get_database("configuration")
     collection = db.get_collection("players")
@@ -49,6 +55,9 @@ def get_game_status():
 
 @app.route("/api/get_game_ready_status")
 def get_game_ready_status():
+
+    # Attempts to get the status of the game by reading the configuration document.
+
     db = client.get_database("configuration")
     collection = db.get_collection("setup")
 
@@ -56,12 +65,11 @@ def get_game_ready_status():
 
     return {"status": doc}
 
-
-# Showing the game scoreboard
-
-
 @app.route("/api/get_scoreboard")
 def get_scoreboard():
+
+    # Collects information of previous games played, sorts them by score and returns
+    # the top 10 scores.
 
     db = client.get_database("stats")
     collection = db.get_collection("scoreboard")
@@ -74,8 +82,7 @@ def get_scoreboard():
     return {"games": docs}
 
 
-# Run the app
-
+# Run the application.
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
